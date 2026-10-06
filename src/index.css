@@ -1,0 +1,629 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #0a0a0a;
+  --bg-warm: #0f0d0b;
+  --bg-cream: #e8e4dc;
+  --bg-stone: #d4cec4;
+  --fg: #e8e4df;
+  --fg-muted: #8a857e;
+  --fg-dim: #4a4640;
+  --fg-dark: #1a1816;
+  --accent: #c4a882;
+  --accent-subtle: rgba(196, 168, 130, 0.08);
+  --accent-glow: rgba(196, 168, 130, 0.12);
+  --surface: #131210;
+  --surface-2: #1a1917;
+  --border: rgba(232, 228, 223, 0.06);
+  --border-hover: rgba(232, 228, 223, 0.12);
+  --border-dark: rgba(26, 24, 22, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ═════════ Scroll Container ═════════ */
+.scroll-container {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Grain overlay */
+.scroll-container::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 256px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.35;
+}
+
+/* ═════════ Section Base ═════════ */
+.section {
+  min-height: 100vh;
+  width: 100vw;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 3rem;
+}
+
+/* ═════════ Section Themes ═════════ */
+
+/* Hero — pure dark */
+.section--hero {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* About — inverted cream */
+.section--about {
+  background: var(--bg-cream);
+  color: var(--fg-dark);
+}
+
+/* Education — warm dark with left accent border */
+.section--education {
+  background: var(--bg-warm);
+  color: var(--fg);
+  border-left: 3px solid var(--accent);
+}
+
+/* Experience — cream/stone with horizontal layout */
+.section--experience {
+  background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-stone) 100%);
+  color: var(--fg-dark);
+}
+
+/* Projects — dark with centered focus */
+.section--projects {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Skills — split: dark + accent tint */
+.section--skills {
+  background: linear-gradient(90deg, var(--bg) 50%, var(--surface-2) 50%);
+  color: var(--fg);
+}
+
+/* Achievements — warm cream, editorial feel */
+.section--achievements {
+  background: var(--bg-cream);
+  color: var(--fg-dark);
+}
+
+/* ═════════ Typography ═════════ */
+.huge-text {
+  font-size: clamp(2.5rem, 7vw, 7rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+.hero .huge-text,
+.section--hero .huge-text {
+  font-size: clamp(2.5rem, 8vw, 8rem);
+}
+
+.sub-text {
+  font-size: clamp(0.85rem, 1.5vw, 1.2rem);
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-top: 1.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.body-text {
+  font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ═════════ Section Labels ═════════ */
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  margin-bottom: 1.5rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.section--about .section-label,
+.section--experience .section-label,
+.section--achievements .section-label {
+  color: rgba(26, 24, 22, 0.35);
+}
+
+/* ═════════ Marquee ═════════ */
+.marquee-bg {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 18vw;
+  font-weight: 800;
+  opacity: 0.04;
+  pointer-events: none;
+  font-family: 'Syne', sans-serif;
+  letter-spacing: -0.04em;
+}
+
+.section--about .marquee-bg {
+  color: var(--fg-dark);
+  opacity: 0.06;
+}
+
+/* ═════════ Contact Links ═════════ */
+.contact-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  z-index: 10;
+}
+
+.contact-links a {
+  color: var(--fg-muted);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.contact-links a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+  border-radius: 100px;
+}
+
+.contact-links a:hover {
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.contact-links a:hover::before {
+  transform: scaleX(1);
+}
+
+/* ═════════ Floating shapes ═════════ */
+.floating-shape {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.12;
+}
+
+/* ═════════ Grid background ═════════ */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ═════════ Dot pattern background ═════════ */
+.dot-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(26,24,22,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+/* ═════════ About section ═════════ */
+.about-word {
+  display: inline-block;
+  margin-right: 0.35em;
+  font-size: clamp(1.3rem, 3vw, 2.4rem);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--fg-dark);
+  font-family: 'Syne', sans-serif;
+}
+
+/* ═════════ Education — Timeline ═════════ */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+  z-index: 10;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+}
+
+.timeline-item {
+  padding: 2rem 0 2rem 2rem;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.timeline-item:last-child {
+  border-bottom: none;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 2.5rem;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translateX(-3.5px);
+}
+
+.timeline-item h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.3rem;
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.timeline-item h4 {
+  font-size: 0.75rem;
+  color: var(--fg-dim);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.timeline-item p {
+  color: var(--fg-muted);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ═════════ Experience — Horizontal cards ═════════ */
+.exp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  width: 100%;
+  max-width: 1000px;
+  z-index: 10;
+  background: var(--border-dark);
+}
+
+.exp-card {
+  padding: 2.5rem;
+  background: var(--bg-cream);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+.exp-card:hover {
+  background: var(--bg-stone);
+}
+
+.exp-card .exp-number {
+  font-size: 3rem;
+  font-weight: 800;
+  color: rgba(26,24,22,0.06);
+  font-family: 'Syne', sans-serif;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.exp-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  color: var(--fg-dark);
+  font-weight: 700;
+}
+
+.exp-card h4 {
+  font-size: 0.7rem;
+  color: rgba(26,24,22,0.4);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.exp-card p {
+  color: rgba(26,24,22,0.55);
+  font-size: 0.85rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ═════════ Projects — Large numbered ═════════ */
+.project-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  z-index: 10;
+}
+
+.project-item:last-child {
+  border-bottom: none;
+}
+
+.project-number {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--fg-dim);
+  font-family: 'Syne', sans-serif;
+  opacity: 0.2;
+  flex-shrink: 0;
+}
+
+.project-content h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+  color: var(--fg);
+  font-weight: 700;
+}
+
+.project-content h4 {
+  font-size: 0.7rem;
+  color: var(--fg-dim);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.project-content p {
+  color: var(--fg-muted);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ═════════ Skills — Split layout ═════════ */
+.skills-split {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+  z-index: 10;
+}
+
+.skills-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.skills-right {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  padding: 3rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.skills-right::-webkit-scrollbar {
+  display: none;
+}
+
+.skill-row {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+}
+
+.skill-row:last-child {
+  border-bottom: none;
+}
+
+.skill-row:hover {
+  background: var(--accent-subtle);
+  padding-left: 2rem;
+}
+
+.skill-row strong {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+  flex-shrink: 0;
+  width: 140px;
+}
+
+.skill-row span {
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ═════════ Achievements — editorial list ═════════ */
+.achievement-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 700px;
+  z-index: 10;
+}
+
+.achievement-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+.achievement-item:last-child {
+  border-bottom: none;
+}
+
+.achievement-item:hover {
+  padding-left: 1rem;
+}
+
+.achievement-item .ach-marker {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.achievement-item .ach-text {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--fg-dark);
+  line-height: 1.5;
+}
+
+.achievement-item:hover .ach-text {
+  color: var(--accent);
+}
+
+/* ═════════ Cursor follower ═════════ */
+.cursor-follower {
+  position: fixed;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+/* ═════════ Responsive ═════════ */
+@media (max-width: 768px) {
+  .section {
+    padding: 2rem 1.5rem;
+  }
+
+  .contact-links {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .exp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-split {
+    flex-direction: column;
+  }
+
+  .section--skills {
+    background: var(--bg);
+  }
+
+  .project-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skill-row {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .skill-row strong {
+    width: auto;
+  }
+}
